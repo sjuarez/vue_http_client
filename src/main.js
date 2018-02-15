@@ -6,12 +6,13 @@ import router from './router'
 import VueResource from 'vue-resource'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import VModal from 'vue-js-modal'
+import VueFilter from 'vue-filter';
 
 Vue.use(VueResource);
 Vue.use(VModal);
+Vue.use(VueFilter);
 
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({

@@ -11,17 +11,17 @@
           </nav>
         </div>
     </div>
-      <div v-for="post in posts" class="row">
+      <div v-for="post in posts" class="row" style="padding-bottom:45px;">
         <div class="col">
           <div class="media">
             <img class="align-self-start mr-3" style="width: 10%" src="../assets/logo.png" alt="Generic placeholder image">
             <div class="media-body">
               <h5 class="mt-0">{{ post.title }}</h5>
-              <p>{{ post.body }}</p>
-              <a href="#" v-on:click="edit(post)" class="badge badge-success">Edit</a>
+              <p>{{ post.body | truncate(100, '...')}}<router-link :to="`/blog/post/${post._id}`"> View More</router-link><br /></p>              
+              <button type="button" v-on:click="edit(post)" class="btn btn-outline-success">Edit Post</button>
               <br />
               <div v-for="author in post.author">
-                <p class="font-italic text-right">{{ author.first_name }} {{ author.last_name }}</p>
+                <footer class="blockquote-footer text-right">Posted By <cite title="Source Title">{{ author.first_name }} {{ author.last_name }}</cite></footer>
               </div>
             </div>
           </div>
@@ -29,7 +29,7 @@
       </div>
       <div class="row">
         <div class="col text-center">
-          <button type="button" v-on:click="show" class="btn btn-dark">Add a Post </button>
+          <button type="button" v-on:click="show" style="margin-bottom:45px;" class="btn btn-dark">Add a Post </button>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@ export default {
       editpost:{
         title:"",
         body:"",
-        author_id:""
+        author_id:"5a80dcfcc1ae923180a9e843"
       },
       posted:false,
       search: '',
@@ -118,8 +118,26 @@ export default {
     hidethnx () {
       this.$modal.hide('has-posted');
     },
+    put:function(){
+      this.$http.put('http://localhost:3001/blog',{
+        _id:this.editpost._id,
+        title:this.editpost.title,
+        body:this.editpost.body,
+        author_id:"5a80dcfcc1ae923180a9e843"
+      }).then(function(res){
+        this.$modal.hide('edit-post');
+        this.$modal.show('has-posted');
+        this.$http.get('http://localhost:3001/blog').then(response => {
+          // success callback
+          this.posts=response.body;
+        }, response => {
+          // error callback
+          console.log(response);
+        });
+      });
+    },
     post:function(){
-      this.$http.post('http://localhost:3001/blog',{
+      this.$http.post('http://localhost:3001/blog/',{
         title:this.blog.title,
         body:this.blog.body,
         author_id:"5a80dcfcc1ae923180a9e843"
@@ -127,13 +145,12 @@ export default {
         console.log(res.body);
         this.$modal.hide('new-post');
         this.$modal.show('has-posted');
-        this.$http.get('http://localhost:3001/blog').then(response => {
+        this.$http.get('http://localhost:3001/blog/').then(response => {
           // success callback
-          //console.log(response.body);
           this.posts=response.body;
         }, response => {
           // error callback
-          console.log(this.id);
+          console.log(response);
         });
       });
     }
@@ -141,7 +158,6 @@ export default {
     created: function() {
         this.$http.get('http://localhost:3001/blog').then(response => {
           // success callback
-          //console.log(response.body);
           this.posts=response.body;
         }, response => {
           // error callback
