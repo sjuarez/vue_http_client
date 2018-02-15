@@ -7,3 +7,4 @@ Intructions
 2. SET LISTEN PORT TO 8081 (FOR CORS AUTH FROM EXPRESS SERVER)
 3. npm run dev
 4. Go to http://localhost:8081/#/blog
+5. Install Express Server side (https://github.com/sjuarez/express_api)
