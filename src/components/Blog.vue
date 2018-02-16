@@ -17,7 +17,7 @@
             <img class="align-self-start mr-3" style="width: 10%" src="../assets/logo.png" alt="Generic placeholder image">
             <div class="media-body">
               <h5 class="mt-0">{{ post.title }}</h5>
-              <p>{{ post.body | truncate(100, '...')}}<router-link :to="`/blog/post/${post._id}`"> View More</router-link><br /></p>              
+              <p>{{ post.body | truncate(100, '...')}}<router-link :to="`/blog/post/${post._id}`"> View More</router-link><br /></p>
               <button type="button" v-on:click="edit(post)" class="btn btn-outline-success">Edit Post</button>
               <br />
               <div v-for="author in post.author">
@@ -124,10 +124,13 @@ export default {
         title:this.editpost.title,
         body:this.editpost.body,
         author_id:"5a80dcfcc1ae923180a9e843"
+      },
+      { headers:
+        {'Authorization': 'Basic SjNKKz8hVXh7eV0ie2QyOlUqdUNlbTsvcmFXRzhieSY='}
       }).then(function(res){
         this.$modal.hide('edit-post');
         this.$modal.show('has-posted');
-        this.$http.get('http://localhost:3001/blog').then(response => {
+        this.$http.get('http://localhost:3001/blog',{params:{}, headers: {'Authorization': 'Basic SjNKKz8hVXh7eV0ie2QyOlUqdUNlbTsvcmFXRzhieSY='}}).then(response => {
           // success callback
           this.posts=response.body;
         }, response => {
@@ -141,11 +144,14 @@ export default {
         title:this.blog.title,
         body:this.blog.body,
         author_id:"5a80dcfcc1ae923180a9e843"
+      },
+      { headers:
+        {'Authorization': 'Basic SjNKKz8hVXh7eV0ie2QyOlUqdUNlbTsvcmFXRzhieSY='}
       }).then(function(res){
         console.log(res.body);
         this.$modal.hide('new-post');
         this.$modal.show('has-posted');
-        this.$http.get('http://localhost:3001/blog/').then(response => {
+        this.$http.get('http://localhost:3001/blog/',{params:{}, headers: {'Authorization': 'Basic SjNKKz8hVXh7eV0ie2QyOlUqdUNlbTsvcmFXRzhieSY='}}).then(response => {
           // success callback
           this.posts=response.body;
         }, response => {
@@ -156,7 +162,7 @@ export default {
     }
     },
     created: function() {
-        this.$http.get('http://localhost:3001/blog').then(response => {
+        this.$http.get('http://localhost:3001/blog',{params:{}, headers: {'Authorization': 'Basic SjNKKz8hVXh7eV0ie2QyOlUqdUNlbTsvcmFXRzhieSY='}}).then(response => {
           // success callback
           this.posts=response.body;
         }, response => {

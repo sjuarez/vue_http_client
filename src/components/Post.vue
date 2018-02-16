@@ -41,7 +41,7 @@ export default {
   created: function() {
 
     var url = 'http://localhost:3001/blog/post/'+this.$route.params.id;
-      this.$http.get(url).then(response => {
+      this.$http.get(url,{params:{}, headers: {'Authorization': 'Basic SjNKKz8hVXh7eV0ie2QyOlUqdUNlbTsvcmFXRzhieSY='}}).then(response => {
         // success callback
         console.log(response.body);
         this.posts=response.body;
